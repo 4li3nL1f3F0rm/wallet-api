@@ -13,5 +13,6 @@ func WalletRoutes(app *fiber.App, db *sql.DB, routes fiber.Router) {
 	walletHandlers := NewWalletHandlers(walletService)
 
 	routes.Get("/wallets", walletHandlers.GetAllWallets)
+	routes.Get("/wallets/:id", walletHandlers.GetWalletById)
 
 }

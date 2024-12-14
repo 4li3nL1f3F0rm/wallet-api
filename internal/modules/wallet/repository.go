@@ -1,6 +1,10 @@
 package wallet
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+	"fmt"
+)
 
 type WalletRepository struct {
 	DB *sql.DB
@@ -26,4 +30,17 @@ func (r *WalletRepository) FindAll() ([]Wallet, error) {
 		wallets = append(wallets, wallet)
 	}
 	return wallets, nil
+}
+
+func (r *WalletRepository) FindById(id int) (Wallet, error) {
+	var wallet Wallet
+	err := r.DB.QueryRow(FindWalletByIDQuery, id).
+		Scan(&wallet.ID, &wallet.UserID, &wallet.Balance)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return Wallet{}, errors.New(fmt.Sprintf("wallet with id %d not found", id))
+		}
+		return Wallet{}, err
+	}
+	return wallet, nil
 }
