@@ -1,9 +1,20 @@
 package user
 
 const (
-	FindAllUsersQuery = "SELECT user_id, first_name, last_name, email, age FROM users"
+	FindAllUsersQuery = `
+		SELECT user_id, first_name, last_name, email, age 
+		FROM users
+	`
 
-	FindUserByIDQuery = "SELECT user_id, first_name, last_name, email, age FROM users WHERE user_id = $1"
+	FindUserByIDQuery = `
+		SELECT user_id, first_name, last_name, email, age 
+		FROM users 
+		WHERE user_id = $1
+	`
 
-	CreateUserQuery = "INSERT INTO users (first_name, last_name, email, age) VALUES ($1, $2, $3, $4) RETURNING id"
+	CreateUserQuery = `
+		INSERT INTO users (first_name, last_name, email, age) 
+		VALUES ($1, $2, $3, $4) 
+		RETURNING id
+	`
 )

@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "wallets" (
   wallet_id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
-  balance INT NOT NULL,
+  balance INT NOT NULL DEFAULT 0,
+  name VARCHAR(255) NOT NULL,
+  description VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES "users" (user_id)
 );
 
@@ -30,37 +32,13 @@ CREATE TABLE IF NOT EXISTS "categories" (
   name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS "transaction_category" (
-  transaction_id INT NOT NULL,
-  category_id INT NOT NULL,
-  FOREIGN KEY (transaction_id) REFERENCES "transactions" (transaction_id),
-  FOREIGN KEY (category_id) REFERENCES "categories" (category_id)
-);
-
-CREATE TABLE IF NOT EXISTS "user_wallet" (
-  user_id INT NOT NULL,
-  wallet_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES "users" (user_id),
-  FOREIGN KEY (wallet_id) REFERENCES "wallets" (wallet_id)
-);
-
-CREATE TABLE IF NOT EXISTS "user_category" (
-  user_id INT NOT NULL,
-  category_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES "users" (user_id),
-  FOREIGN KEY (category_id) REFERENCES "categories" (category_id)
-);
-
 -- +goose StatementEnd
 -- +goose Down
 -- +goose StatementBegin
 
-DROP TABLE IF EXISTS "transaction_category";
-DROP TABLE IF EXISTS "user_wallet";
-DROP TABLE IF EXISTS "user_category";
-DROP TABLE IF EXISTS "transaction";
-DROP TABLE IF EXISTS "wallet";
-DROP TABLE IF EXISTS "category";
-DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS "transactions" CASCADE;
+DROP TABLE IF EXISTS "wallets" CASCADE;
+DROP TABLE IF EXISTS "categories" CASCADE;
+DROP TABLE IF EXISTS "users" CASCADE;
 
 -- +goose StatementEnd

@@ -1,6 +1,8 @@
 package user
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -28,6 +30,9 @@ func (h *UserHandlers) GetUser(c *fiber.Ctx) error {
 
 	user, err := h.Service.GetUser(id)
 	if err != nil {
+		if err.Error() == fmt.Sprintf("user with id %d not found", id) {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
+		}
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 	return c.JSON(user)
