@@ -8,13 +8,7 @@ import (
 )
 
 func SetupRoutes(app *fiber.App, db *sql.DB) {
-	userRepo := user.NewUserRepository(db)
-	userService := user.NewUserService(userRepo)
-	userHandlers := user.NewUserHandlers(userService)
-
-	userRoutes := app.Group("/users")
-	userRoutes.Get("/", userHandlers.GetAllUsers)
-	userRoutes.Get("/:id", userHandlers.GetUser)
-	userRoutes.Post("/", userHandlers.CreateUser)
+	routes := app.Group("/api")
+	user.UserRoutes(app, db, routes)
 
 }
