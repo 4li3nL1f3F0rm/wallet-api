@@ -2,6 +2,8 @@ package user
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 )
 
 type UserRepository struct {
@@ -35,6 +37,9 @@ func (r *UserRepository) FindById(id int) (User, error) {
 	err := r.DB.QueryRow(FindUserByIDQuery, id).
 		Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Age)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return User{}, errors.New(fmt.Sprintf("user with id %d not found", id))
+		}
 		return User{}, err
 	}
 	return user, nil
