@@ -14,6 +14,7 @@ func SetupRoutes(app *fiber.App, db *sql.DB) {
 
 	userRoutes := app.Group("/users")
 	userRoutes.Get("/", userHandlers.GetAllUsers)
+	userRoutes.Get("/:id", userHandlers.GetUser)
 	userRoutes.Post("/", userHandlers.CreateUser)
 
 }
