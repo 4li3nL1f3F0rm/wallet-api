@@ -13,7 +13,7 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 }
 
 func (r *UserRepository) FindAll() ([]User, error) {
-	rows, err := r.DB.Query(`SELECT user_id, first_name, last_name, email, age FROM "user"`)
+	rows, err := r.DB.Query(FindAllUsersQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -30,9 +30,19 @@ func (r *UserRepository) FindAll() ([]User, error) {
 	return users, nil
 }
 
+func (r *UserRepository) FindById(id int) (User, error) {
+	var user User
+	err := r.DB.QueryRow(FindUserByIDQuery, id).
+		Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Age)
+	if err != nil {
+		return User{}, err
+	}
+	return user, nil
+}
+
 func (r *UserRepository) Create(user User) (User, error) {
 	err := r.DB.QueryRow(
-		"INSERT INTO users (first_name, last_name, email, age) VALUES ($1, $2, $3, $4) RETURNING id",
+		CreateUserQuery,
 		user.FirstName, user.LastName, user.Email, user.Age,
 	).Scan(&user.ID)
 	if err != nil {
