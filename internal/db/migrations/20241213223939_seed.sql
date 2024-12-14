@@ -1,6 +1,6 @@
 -- +goose Up
 -- Seed users
-INSERT INTO "user" (email, password, first_name, last_name, age)
+INSERT INTO "users" (email, password, first_name, last_name, age)
 VALUES
 ('user1@example.com', 'password1', 'Alice', 'Smith', 28),
 ('user2@example.com', 'password2', 'Bob', 'Johnson', 34),
@@ -14,7 +14,7 @@ VALUES
 ('user10@example.com', 'password10', 'Jack', 'Taylor', 30);
 
 -- Seed wallets (1–4 wallets per user)
-INSERT INTO "wallet" (user_id, balance)
+INSERT INTO "wallets" (user_id, balance)
 VALUES
 (1, 1200), (1, 500), 
 (2, 800),
@@ -28,7 +28,7 @@ VALUES
 (10, 1800);
 
 -- Seed transactions (5–10 transactions per wallet)
-INSERT INTO "transaction" (wallet_id, amount, description)
+INSERT INTO "transactions" (wallet_id, amount, description)
 VALUES
 (1, -50, 'Groceries'), (1, -200, 'Rent'), (1, -30, 'Utilities'), (1, 300, 'Salary'), (1, -10, 'Coffee'),
 (2, -20, 'Snacks'), (2, -100, 'Shopping'), (2, 500, 'Bonus'), (2, -15, 'Lunch'),
@@ -42,7 +42,7 @@ VALUES
 (10, -400, 'Vacation'), (10, -200, 'Entertainment'), (10, 1800, 'Salary');
 
 -- Seed categories
-INSERT INTO "category" (name)
+INSERT INTO "categories" (name)
 VALUES
 ('Groceries'), ('Entertainment'), ('Utilities'), ('Rent'), ('Shopping'), ('Travel'), ('Salary'), ('Bonus'), ('Coffee');
 
@@ -70,8 +70,8 @@ VALUES
 -- +goose Down
 -- Delete data in reverse order to avoid foreign key violations
 DELETE FROM "transaction_category";
-DELETE FROM "transaction";
+DELETE FROM "transactions";
 DELETE FROM "user_wallet";
-DELETE FROM "wallet";
-DELETE FROM "category";
-DELETE FROM "user";
+DELETE FROM "wallets";
+DELETE FROM "categories";
+DELETE FROM "users";
